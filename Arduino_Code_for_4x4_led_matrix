@@ -1,0 +1,143 @@
+byte imageone[]={B00000,
+                 B00000,
+                 B00000,
+                 B00100,
+                 B01110};
+byte imagetwo[]={B00000,
+                 B00000,
+                 B00100,
+                 B01110,
+                 B00100};
+byte imagethree[]={B00000,
+                   B00100,
+                   B01110,
+                   B00100,
+                   B00100};
+byte imagefour[]={ B00100,
+                   B01110,
+                   B00100,
+                   B00100,
+                   B00100};
+byte imagefive[]={ B01110,
+                   B00100,
+                   B00000,
+                   B00000,
+                   B00000};
+byte imagesix[]={  B00100,
+                   B01110,
+                   B00100,
+                   B00000,
+                   B00000};
+byte imageseven[]={B00100,
+                   B00100,
+                   B01110,
+                   B00100,
+                   B00000};
+byte imageeight[]={B00100,
+                   B00100,
+                   B00100,
+                   B01110,
+                   B00100};
+                 
+const int rowpins[]={0,1,2,3,4};
+const int columnpins[]={9,8,7,6,5};
+int x;
+int y;
+void setup()
+{
+  pinMode(18,INPUT);
+  pinMode(19,INPUT);
+  for(int i=0;i<5;i++)
+  {
+    pinMode(rowpins[i],OUTPUT);
+    pinMode(columnpins[i],OUTPUT);
+    digitalWrite(columnpins[i],HIGH);
+  }
+}           
+void loop()
+{
+  digitalWrite(18,HIGH);
+  digitalWrite(19,HIGH);
+  x=digitalRead(18);
+  y=digitalRead(19);
+  if(x==LOW)
+  {
+    goto p1;
+  }
+  else if(y==LOW) 
+  {
+    goto p2;
+  }
+    
+p1:while (x==LOW)
+  {
+//  {
+  x=digitalRead(18);
+   if(x==HIGH)
+   {
+   
+    show(imageone,200);
+  delay(100);
+   show(imagetwo,200);
+  delay(100);
+  show(imagethree,200);
+  delay(100);
+  show(imagefour,200);
+  delay(100);
+  
+  //break();
+  /*show(imagefive,200);
+  delay(100);
+  show(imagesix,200);
+  delay(100);*/
+   }
+  }
+p2:while (y==LOW)
+  {
+//  {
+  y=digitalRead(19);
+   if(y==HIGH)
+   {
+  show(imagefive,200);
+  delay(100);
+   show(imagesix,200);
+  delay(100);
+  show(imageseven,200);
+  delay(100);
+  show(imageeight,200);
+  delay(100);
+  
+  //break();
+  /*show(imagefive,200);
+  delay(100);
+  show(imagesix,200);
+  delay(100);*/
+   }
+  }
+
+}
+void show(byte *image,unsigned long duration)
+{
+  unsigned long start = millis();
+  while(start+duration>millis())
+  {
+    for(int row=0;row<5;row++)
+    {
+      digitalWrite(rowpins[row],HIGH);
+    
+    for(int column=0;column<5;column++)
+    {
+      boolean pixel =bitRead(image[row],column);
+      if(pixel==1)
+      {
+        digitalWrite(columnpins[column],LOW);
+      }
+      delayMicroseconds(300);
+       digitalWrite(columnpins[column],HIGH);
+    }
+        digitalWrite(rowpins[row],LOW);
+        }
+  }
+}
+    
+  
